@@ -11,15 +11,25 @@ module LuckyWeb::Page
   include LuckyWeb::AssetHelpers
 
   macro included
-    # If included directly
     SETTINGS = {} of Nil => Nil
     ASSIGNS = {} of Nil => Nil
 
     macro inherited
-      # If used as a base class, reset the settings and assigns when it's inherited
       SETTINGS = {} of Nil => Nil
       ASSIGNS = {} of Nil => Nil
+
+      inherit_page_settings
     end
+  end
+
+  macro inherit_page_settings
+    \{% for k, v in @type.ancestors.first.constant :ASSIGNS %}
+      \{% ASSIGNS[k] = v %}
+    \{% end %}
+
+    \{% for k, v in @type.ancestors.first.constant :SETTINGS %}
+      \{% SETTINGS[k] = v %}
+    \{% end %}
   end
 
   macro layout(layout_class)
