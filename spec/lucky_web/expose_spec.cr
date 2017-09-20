@@ -3,8 +3,6 @@ require "../spec/spec_helper"
 include ContextHelper
 
 class OnlyExpose < LuckyWeb::Action
-  include LuckyWeb::Exposeable
-
   expose :name
 
   get "/expose" do
@@ -27,11 +25,7 @@ class OnlyExposePage
 end
 
 abstract class InheritedExposureAction < LuckyWeb::Action
-  include LuckyWeb::Exposeable
-
-  macro inherited
-    expose :expose_one
-  end
+  expose :expose_one
 
   def expose_one
     "expose_one"
